@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config>
+    <menu>
+        <sales>
+            <children>
+                <cardcadou translate="title" module="cardcadou">
+                    <sort_order>10</sort_order>
+                    <title>CardCadou</title>
+                    <action>adminhtml/cardcadou/</action>
+                </cardcadou>
+            </children>
+        </sales>
+    </menu>
+</config>

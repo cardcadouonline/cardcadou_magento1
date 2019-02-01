@@ -1,0 +1,126 @@
+<?php $_helper = Mage::helper('cardcadou'); ?>
+
+<?php if ($_helper->isEnabled()): ?>
+    <div id="form-cardcadou">
+        <div id="open-form">
+            <h4><a href="#form-cardcadou"><?php echo Mage::helper('cardcadou')->getMethodName() ?></a></h4>
+        </div>
+        <div class="cardcadou hidden block">
+            <ul class="form-list">
+                <li class="wide">
+                    <label for="cardcadou">
+                        <?php echo Mage::helper('cardcadou')->__('Card Number') ?>
+                    </label>
+                    <div class="input-box">
+                        <?php
+                        $couponCode = Mage::getSingleton('checkout/session')->getCouponCode();
+                        if(isset($couponCode)) { ?>
+                        <input type="text" name="cardcadou" id="cardcadou" value="<?php echo Mage::getSingleton('checkout/session')->getCouponCode(); ?>"
+                               title="<?php echo Mage::helper('cardcadou')->__('Card Number') ?>" class="input-text"/>
+                        <?php } else { ?>
+                            <input type="text" name="cardcadou" id="cardcadou"
+                                   title="<?php echo Mage::helper('cardcadou')->__('Card Number') ?>" class="input-text"/>
+                        <?php } ?>
+                        <div class="validation-advice" id="error-message"></div>
+                        <div class="success" id="success-message"></div>
+                    </div>
+                </li>
+            </ul>
+            <div class="buttons-set">
+                <button type="button" class="button" id="add-card"
+                        title="<?php echo Mage::helper('cardcadou')->getCallToActionText() ?>" onclick="verifyCard()">
+                    <span><span><?php echo Mage::helper('cardcadou')->getCallToActionText() ?></span></span></button>
+                <button type="button" class="button" id="remove-card"
+                        title="<?php echo Mage::helper('cardcadou')->__('Remove Card') ?>" style="display: none"
+                        onclick="removeCard()">
+                    <span><span><?php echo Mage::helper('cardcadou')->__('Remove Card') ?></span></span></button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        function verifyCard() {
+            var card = jQuery("#cardcadou").val();
+            jQuery.ajax({
+                type: "GET",
+                url: "<?php echo Mage::getUrl('cardcadou/ajax/verify') ?>?card=" + card,
+                dataType: "json",
+                beforeSend: function () {
+                },
+                complete: function () {
+                },
+                success: function (result) {
+                    if (result.status == 1) {
+                        jQuery('#error-message').hide();
+                        jQuery('#cardcadou').addClass('validation-passed');
+                        jQuery('#cardcadou').removeClass('validation-failed');
+
+                        jQuery('#success-message').html(result.message);
+                        jQuery('#success-message').show().delay(5000).fadeOut();
+
+                        jQuery('#checkout-review-table tfoot').replaceWith(result.refreshtotalBLK);
+                        if (jQuery('#cardcadou').val() != '') {
+                            jQuery('#remove-card').show();
+                            jQuery('#add-card').hide();
+                        }
+                    }
+                    else {
+                        if (result.status == 0) {
+                            jQuery('#error-message').html(result.error);
+                            jQuery('#error-message').show().delay(5000).fadeOut();
+                            jQuery('#cardcadou').removeClass('validation-passed');
+                            jQuery('#cardcadou').addClass('validation-failed').delay(5000).queue(function(remove){
+                                jQuery('#cardcadou').removeClass('validation-failed');
+                                remove();
+                            });
+                            jQuery('#add-card').show();
+                        } else {
+                        }
+                    }
+                }
+            });
+        }
+
+        function removeCard() {
+            var card = jQuery("#cardcadou").val();
+            jQuery.ajax({
+                type: "GET",
+                url: "<?php echo Mage::getUrl('cardcadou/ajax/remove') ?>?card=" + card,
+                dataType: "json",
+                beforeSend: function () {
+                },
+                complete: function () {
+                },
+                success: function (result) {
+                    if (result.status == 1) {
+                        jQuery('#success-message').html(result.message);
+                        jQuery('#success-message').show().delay(5000).fadeOut();
+                        jQuery('#cardcadou').val('');
+                        jQuery('#remove-card').hide();
+                        jQuery('#add-card').show();
+                    }
+                    else {
+                        if (result.status == 0) {
+                            jQuery('#error-message').html(result.error);
+                            jQuery('#error-message').show().delay(5000).fadeOut();
+                        }
+                    }
+                }
+            });
+        }
+
+        jQuery(document).ready(function () {
+            jQuery("#open-form").click(function () {
+                jQuery("#form-cardcadou .block").show();
+                jQuery("#form-cardcadou input").prop('disabled', false);
+                jQuery("#form-cardcadou button").prop('disabled', false);
+                if (jQuery('#cardcadou').val() != '') {
+                    jQuery('#remove-card').show();
+                    jQuery('#add-card').hide();
+                }
+
+            });
+        });
+    </script>
+<?php endif; ?>

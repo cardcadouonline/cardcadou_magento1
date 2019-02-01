@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Pitech_CardCadou>
+            <active>true</active>
+            <codePool>community</codePool>
+            <version>0.1.0</version>
+        </Pitech_CardCadou>
+    </modules>
+</config>

@@ -1,0 +1,7 @@
+src/app/code/community/Pitech/CardCadou		                    app/code/community/Pitech/CardCadou
+src/app/etc/modules/Pitech_CardCadou.xml                        app/etc/modules/Pitech_CardCadou.xml
+src/app/design/adminhtml/default/default/layout/cardcadou.xml   app/design/adminhtml/default/default/layout/cardcadou.xml
+src/app/design/frontend/base/default/layout/cardcadou.xml       app/design/frontend/base/default/layout/cardcadou.xml
+src/lib/CardCadou	                                            lib/CardCadou
+src/app/locale/ro_RO                                            app/locale/ro_RO
+src/app/design/frontend/base/default/template/cardcadou         app/design/frontend/base/default/template/cardcadou

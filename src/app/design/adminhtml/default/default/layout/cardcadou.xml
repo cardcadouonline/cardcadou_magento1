@@ -1,0 +1,7 @@
+<layout>
+    <adminhtml_cardcadou_index>
+        <reference name="content">
+            <block type="cardcadou/adminhtml_transaction" name="transaction"/>
+        </reference>
+    </adminhtml_cardcadou_index>
+</layout>
