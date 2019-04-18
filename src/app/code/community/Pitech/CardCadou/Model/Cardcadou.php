@@ -23,9 +23,10 @@ class Pitech_CardCadou_Model_Cardcadou
     public function cardcadou()
     {
         $_partnerCode = Mage::getStoreConfig('payment/cardcadou/partner_code', null);
+        $_testMode = Mage::getStoreConfig('payment/cardcadou/test_mode', null);
         $_secretkey = Mage::helper('core')->decrypt(Mage::getStoreConfig('payment/cardcadou/secret_key', null));
 
-        $_restClient = new Client_CardCadou($_partnerCode, $_secretkey, true);
+        $_restClient = new Client_CardCadou($_partnerCode, $_secretkey, $_testMode);
 
         return $_restClient;
     }
